@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style>
+		table {
+			font-family: arial, sans-serif;
+			border-collapse: collapse;
+			width: 100%;
+		}
+
+		td, th {
+			border: 1px solid #dddddd;
+			text-align: left;
+			padding: 8px;
+		}
+
+		tr:nth-child(even) {
+			background-color: #dddddd;
+		}
+		.auidogram_input{
+			width: 50px;
+			text-align: center;
+			background: transparent;
+			border:0;
+		}
+		.auidogram_input:focus{
+			background: white;
+		}
+		input::-webkit-outer-spin-button,input::-webkit-inner-spin-button {
+			-webkit-appearance: none; margin: 0;
+		}
+		input[type=number] {-moz-appearance:textfield;}
+		
+		.leftinput{
+			color:blue;
+		}
+		.leftinput::placeholder {
+			color: blue;
+			opacity: 1; /* Firefox */
+		}
+
+		.rightinput{
+			color:red;
+		}
+
+		.rightinput::placeholder {
+			color: red;
+			opacity: 1; /* Firefox */
+		}
+		.left{
+			color:blue;
+		}
+		.right{
+			color:red;
+		}
+	</style>
+
+	<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script> 
+	
+</head>
+<body>
+
+	<div class="audiolog" style="text-align: center;">
+		<h2 style="text-align: center">Aydokiology</h2>
+		<img id="lairimg" width="30" height="20" src="audiogram/left.air.unmasked.response.png" style="display: none;">
+		<img id="lboneimg" width="30" height="20" src="audiogram/left.bone.unmasked.response.png" style="display: none;">
+		<img id="lmaskimg" width="30" height="20" src="audiogram/left.air.masked.response.png" style="display: none;">
+		<img id="lemaskboneimg" width="30" height="20" src="audiogram/left.bone.masked.response.png" style="display: none;">
+		<img id="rairimg" width="30" height="20" src="audiogram/right.air.unmasked.response.png" style="display: none;">
+		<img id="rboneimg" width="30" height="20" src="audiogram/right.bone.unmasked.response.png" style="display: none;">
+		<img id="rmaskimg" width="30" height="20" src="audiogram/right.air.masked.response.png" style="display: none;">
+		<img id="rimaskboneimg" width="30" height="20" src="audiogram/right.bone.masked.response.png" style="display: none;">
+
+		<canvas id="myCanvas" width="600" height="500" style="border:1px solid;"></canvas>
+	</div>
+	
+	<table>
+		<tr>
+			<th>freg</th>
+			<th class="left">L: Air</th>
+			<th class="left">L: Bone</th>
+			<th class="left">L: Mask</th>
+			<th class="left">L: Mask Bone</th>
+			<th class="right">R: Air</th>
+			<th class="right">R: Bone</th>
+			<th class="right">R: Mask</th>
+			<th class="right">R: Mask Bone</th>
+		</tr>
+		<tr>
+			<td class="freg">125</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair125"  name="lair[0]"  placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone125"  name="lbone[0]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask125"  name="lmask[0]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone125"  name="lemaskbone[0]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair125"  name="rair[0]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone125"  name="rbone[0]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask125"  name="rmask[0]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone125"  name="rimaskbone[0]" placeholder="*"></td>
+		</tr>
+		<tr>
+			<td class="freg">250</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair250"  name="lair[1]" placeholder="*" ></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone250"  name="lbone[1]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask250"  name="lmask[1]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone250"  name="lemaskbone[1]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair250"  name="rair[1]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone250"  name="rbone[1]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask250"  name="rmask[1]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone250"  name="rimaskbone[1]" placeholder="*"></td>
+		</tr>
+		<tr>
+			<td class="freg">500</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair500"  name="lair[2]"  placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone500"  name="lbone[2]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask500"  name="lmask[2]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone500"  name="lemaskbone[2]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair500"  name="rair[2]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone500"  name="rbone[2]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask500"  name="rmask[2]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone500"  name="rimaskbone[2]" placeholder="*"></td>
+		</tr>
+		
+		<tr>
+			<td class="freg">750</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair750"  name="lair[3]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone750"  name="lbone[3]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask750"  name="lmask[3]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone750"  name="lemaskbone[3]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair750"  name="rair[3]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone750"  name="rbone[3]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask750"  name="rmask[3]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone750"  name="rimaskbone[3]" placeholder="*"></td>
+		</tr>
+		<tr>
+			<td class="freg">1000</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair1000"  name="lair[4]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone1000"  name="lbone[4]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask1000"  name="lmask[4]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone1000"  name="lemaskbone[4]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair1000"  name="rair[4]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone1000"  name="rbone[4]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask1000"  name="rmask[4]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone1000"  name="rimaskbone[4]" placeholder="*"></td>
+		</tr>
+		<tr>
+			<td class="freg">1500</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair1500"  name="lair[5]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone1500"  name="lbone[5]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask1500"  name="lmask[5]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone1500"  name="lemaskbone[5]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair1500"  name="rair[5]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone1500"  name="rbone[5]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask1500"  name="rmask[5]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone1500"  name="rimaskbone[5]" placeholder="*"></td>
+		</tr>
+		<tr>
+			<td class="freg">2000</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair2000"  name="lair[6]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone2000"  name="lbone[6]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask2000"  name="lmask[6]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone2000"  name="lemaskbone[6]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair2000"  name="rair[6]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone2000"  name="rbone[6]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask2000"  name="rmask[6]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone2000"  name="rimaskbone[6]" placeholder="*"></td>
+		</tr>
+		<tr>
+			<td class="freg">3000</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair3000"  name="lair[7]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone3000"  name="lbone[7]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask3000"  name="lmask[7]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone3000"  name="lemaskbone[7]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair3000"  name="rair[7]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone3000"  name="rbone[7]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask3000"  name="rmask[7]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone3000"  name="rimaskbone[7]" placeholder="*"></td>
+		</tr>
+		<tr>
+			<td class="freg">4000</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair4000"  name="lair[8]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone4000"  name="lbone[8]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask4000"  name="lmask[8]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone4000"  name="lemaskbone[8]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair4000"  name="rair[8]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone4000"  name="rbone[8]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask4000"  name="rmask[8]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone4000"  name="rimaskbone[8]" placeholder="*"></td>
+		</tr>
+		<tr>
+			<td class="freg">6000</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair6000"  name="lair[9]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone6000"  name="lbone[9]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask6000"  name="lmask[9]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone6000"  name="lemaskbone[9]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair6000"  name="rair[9]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone6000"  name="rbone[9]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask6000"  name="rmask[9]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone6000"  name="rimaskbone[9]" placeholder="*"></td>
+		</tr>
+		<tr>
+			<td class="freg">8000</td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lair8000"  name="lair[10]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lbone8000"  name="lbone[10]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="lmask8000"  name="lmask[10]" placeholder="*"></td>
+			<td class="left"><input class="auidogram_input leftinput" type="number" min="-10" max="120" onClick="this.select();" id="maskbone8000"  name="lemaskbone[10]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rair8000"  name="rair[10]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rbone8000"  name="rbone[10]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmask8000"  name="rmask[10]" placeholder="*"></td>
+			<td class="right"><input class="auidogram_input rightinput" type="number" min="-10" max="120" onClick="this.select();" id="rmaskbone8000"  name="rimaskbone[10]" placeholder="*"></td>
+		</tr>
+		
+	</table>
+
+</body>
+</html>
+
+<script type="text/javascript">
+
+	function start(){
+		var c = document.getElementById("myCanvas");
+		var ctx = c.getContext("2d");
+		ctx.clearRect(0, 0, c.width, c.height);
+
+		ctx.beginPath();
+		ctx.moveTo(20, 20);
+		ctx.lineTo(600, 20);
+
+		ctx.moveTo(20, 55);
+		ctx.lineTo(600, 55);
+		ctx.moveTo(20, 90);
+		ctx.lineTo(600, 90);
+		ctx.moveTo(20, 125);
+		ctx.lineTo(600, 125);
+		ctx.moveTo(20, 160);
+		ctx.lineTo(600, 160);
+		ctx.moveTo(20, 195);
+		ctx.lineTo(600, 195);
+		ctx.moveTo(20, 230);
+		ctx.lineTo(600, 230);
+		ctx.moveTo(20, 265);
+		ctx.lineTo(600, 265);
+		ctx.moveTo(20, 300);
+		ctx.lineTo(600, 300);
+		ctx.moveTo(20, 335);
+		ctx.lineTo(600, 335);
+		ctx.moveTo(20, 370);
+		ctx.lineTo(600, 370);
+		ctx.moveTo(20, 405);
+		ctx.lineTo(600, 405);
+		ctx.moveTo(20, 440);
+		ctx.lineTo(600, 440);
+		ctx.moveTo(20, 475);
+		ctx.lineTo(600, 475);
+
+		ctx.moveTo(50, 20);
+		ctx.lineTo(50, 500);
+		ctx.moveTo(100, 20);
+		ctx.lineTo(100, 500);
+		ctx.moveTo(150, 20);
+		ctx.lineTo(150, 500);
+		ctx.moveTo(200, 20);
+		ctx.lineTo(200, 500);
+		ctx.moveTo(250, 20);
+		ctx.lineTo(250, 500);
+		ctx.moveTo(300, 20);
+		ctx.lineTo(300, 500);
+		ctx.moveTo(350, 20);
+		ctx.lineTo(350, 500);
+		ctx.moveTo(400, 20);
+		ctx.lineTo(400, 500);
+		ctx.moveTo(450, 20);
+		ctx.lineTo(450, 500);
+		ctx.moveTo(500, 20);
+		ctx.lineTo(500, 500);
+		ctx.moveTo(550, 20);
+		ctx.lineTo(550, 500);
+		ctx.moveTo(600, 20);
+		ctx.lineTo(600, 500);
+		ctx.strokeStyle="black";
+		ctx.stroke();
+
+		ctx.beginPath();
+		ctx.font = "10px";
+		ctx.strokeText("-10",3,22);
+		ctx.strokeText("0",12,57);
+		ctx.strokeText("10",6,92);
+		ctx.strokeText("20",6,127);
+		ctx.strokeText("30",6,162);
+		ctx.strokeText("40",6,197);
+		ctx.strokeText("50",6,232);
+		ctx.strokeText("60",6,267);
+		ctx.strokeText("70",6,302);
+		ctx.strokeText("80",6,337);
+		ctx.strokeText("90",6,372);
+		ctx.strokeText("100",2,407);
+		ctx.strokeText("110",2,442);
+		ctx.strokeText("120",2,477);
+		ctx.strokeText("125",42,12);
+		ctx.strokeText("250",92,12);
+		ctx.strokeText("500",142,12);
+		ctx.strokeText("750",192,12);
+		ctx.strokeText("1000",240,12);
+		ctx.strokeText("1500",290,12);
+		ctx.strokeText("2000",340,12);
+		ctx.strokeText("3000",390,12);
+		ctx.strokeText("4000",440,12);
+		ctx.strokeText("6000",490,12);
+		ctx.strokeText("8000",540,12);
+		ctx.strokeStyle = "black";
+		ctx.stroke();
+
+		var lairimg = document.getElementById("lairimg");
+		var lboneimg = document.getElementById("lboneimg");
+		var rairimg = document.getElementById("rairimg");
+		var rboneimg = document.getElementById("rboneimg");
+		var rmaskimg = document.getElementById("rmaskimg");
+		var rimaskboneimg = document.getElementById("rimaskboneimg");
+
+
+		$('input[name^="lair"]').each(function(i) {
+			var thisval = $(this).val();
+			thisval = parseInt(thisval);
+			var thismaskval =  $('input[name^="lmask['+(i)+']"]').val();
+			thismaskval = parseInt(thismaskval);
+			var beforeval = $('input[name^="lair['+(i-1)+']"]').val();
+			beforeval = parseInt(beforeval);
+			var beforemaskval = $('input[name^="lmask['+(i-1)+']"]').val();
+			beforemaskval = parseInt(beforemaskval);
+
+			ctx.beginPath();
+			
+			if(!isNaN(beforemaskval)){
+
+				if(!isNaN(thismaskval)){
+
+					ctx.moveTo(((i*50)+50),(((thismaskval+10)*3.5)+20));
+					ctx.lineTo((((i-1)*50)+50),(((beforemaskval+10)*3.5)+20));
+
+
+				}else{
+
+					ctx.moveTo(((i*50)+50),(((thisval+10)*3.5)+20));
+					ctx.lineTo((((i-1)*50)+50),(((beforemaskval+10)*3.5)+20));
+
+				}
+
+			}else{
+
+				ctx.moveTo(((i*50)+50),(((thisval+10)*3.5)+20));
+				ctx.lineTo((((i-1)*50)+50),(((beforeval+10)*3.5)+20));
+
+			}
+
+			ctx.drawImage(lairimg,((i*50)+17),(((thisval+10)*3.5)+4));
+			ctx.strokeStyle = "#0000D6";
+			ctx.closePath();
+			ctx.stroke();
+		});
+		$('input[name^="rair"]').each(function(i) {
+			var thisval = $(this).val();
+			thisval = parseInt(thisval);
+			var thismaskval =  $('input[name^="rmask['+(i)+']"]').val();
+			thismaskval = parseInt(thismaskval);
+			var beforeval = $('input[name^="rair['+(i-1)+']"]').val();
+			beforeval = parseInt(beforeval);
+			var beforemaskval = $('input[name^="rmask['+(i-1)+']"]').val();
+			beforemaskval = parseInt(beforemaskval);
+
+			ctx.beginPath();
+
+			if(!isNaN(beforemaskval)){
+				if(!isNaN(thismaskval)){
+
+					ctx.moveTo(((i*50)+50),(((thismaskval+10)*3.5)+20));
+					ctx.lineTo((((i-1)*50)+50),(((beforemaskval+10)*3.5)+20));
+
+
+				}else{
+
+					ctx.moveTo(((i*50)+50),(((thisval+10)*3.5)+20));
+					ctx.lineTo((((i-1)*50)+50),(((beforemaskval+10)*3.5)+20));
+
+				}
+			}else{
+
+				ctx.moveTo(((i*50)+50),(((thisval+10)*3.5)+20));
+				ctx.lineTo((((i-1)*50)+50),(((beforeval+10)*3.5)+20));
+
+			}
+
+			ctx.drawImage(rairimg,((i*50)+17),(((thisval+10)*3.5)+4));
+			ctx.strokeStyle = "red";
+			ctx.closePath();
+			ctx.stroke();
+		});
+
+		
+		$('input[name^="lbone"]').each(function(i) {
+			var thisval = $(this).val();
+			thisval = parseInt(thisval);
+			var beforeval = $('input[name^="lbone['+(i-1)+']"]').val();
+			beforeval = parseInt(beforeval);
+
+			ctx.beginPath();
+			ctx.drawImage(lboneimg,((i*50)+14),(((thisval+10)*3.5)+4));
+			ctx.strokeStyle = "#0000D6";
+			ctx.closePath();
+			ctx.stroke();
+		});	
+		$('input[name^="rbone"]').each(function(i) {
+			var thisval = $(this).val();
+			thisval = parseInt(thisval);
+			var beforeval = $('input[name^="rbone['+(i-1)+']"]').val();
+			beforeval = parseInt(beforeval);
+
+			ctx.beginPath();
+			ctx.drawImage(rboneimg,((i*50)+17),(((thisval+10)*3.5)+4));
+			ctx.strokeStyle = "red";
+			ctx.closePath();
+			ctx.stroke();
+		});	
+		$('input[name^="lmask"]').each(function(i) {
+			var thisval = $(this).val();
+			thisval = parseInt(thisval);
+			var beforeval = $('input[name^="lmask['+(i-1)+']"]').val();
+			beforeval = parseInt(beforeval);
+
+			ctx.beginPath();
+			ctx.drawImage(lmaskimg,((i*50)+17),(((thisval+10)*3.5)+4));
+			ctx.strokeStyle = "#0000D6";
+			ctx.closePath();
+			ctx.stroke();
+		});		
+		$('input[name^="rmask"]').each(function(i) {
+			var thisval = $(this).val();
+			thisval = parseInt(thisval);
+			var beforeval = $('input[name^="rmask['+(i-1)+']"]').val();
+			beforeval = parseInt(beforeval);
+
+			ctx.beginPath();
+			ctx.drawImage(rmaskimg,((i*50)+17),(((thisval+10)*3.5)+4));
+			ctx.strokeStyle = "red";
+			ctx.closePath();
+			ctx.stroke();
+		});		
+		$('input[name^="lemaskbone"]').each(function(i) {
+			var thisval = $(this).val();
+			thisval = parseInt(thisval);
+			var beforeval = $('input[name^="lemaskbone['+(i-1)+']"]').val();
+			beforeval = parseInt(beforeval);
+
+			ctx.beginPath();
+			ctx.drawImage(lemaskboneimg,((i*50)+14),(((thisval+10)*3.5)+4));
+			ctx.strokeStyle = "#0000D6";
+			ctx.closePath();
+			ctx.stroke();
+		});		
+		$('input[name^="rimaskbone"]').each(function(i) {
+			var thisval = $(this).val();
+			thisval = parseInt(thisval);
+			var beforeval = $('input[name^="rimaskbone['+(i-1)+']"]').val();
+			beforeval = parseInt(beforeval);
+
+			ctx.beginPath();
+			ctx.drawImage(rimaskboneimg,((i*50)+14),(((thisval+10)*3.5)+4));
+			ctx.strokeStyle = "red";
+			ctx.closePath();
+			ctx.stroke();
+		});		
+
+	}
+
+	start();
+
+
+	$('input[name^="lair"]').change(function(){
+
+		if($(this).val()>120){
+			$(this).val('120');
+		}else if($(this).val()<-10){
+			$(this).val('-10');
+		}
+		start();
+	});
+	$('input[name^="lbone"]').change(function(){
+
+		if($(this).val()>120){
+			$(this).val('120');
+		}else if($(this).val()<-10){
+			$(this).val('-10');
+		}
+		start();
+	});
+	$('input[name^="lmask"]').change(function(){
+
+		if($(this).val()>120){
+			$(this).val('120');
+		}else if($(this).val()<-10){
+			$(this).val('-10');
+		}
+		start();
+	});
+	$('input[name^="lemaskbone"]').change(function(){
+
+		if($(this).val()>120){
+			$(this).val('120');
+		}else if($(this).val()<-10){
+			$(this).val('-10');
+		}
+		start();
+	});
+	$('input[name^="rair"]').change(function(){
+
+		if($(this).val()>120){
+			$(this).val('120');
+		}else if($(this).val()<-10){
+			$(this).val('-10');
+		}
+		start();
+	});
+	$('input[name^="rbone"]').change(function(){
+
+		if($(this).val()>120){
+			$(this).val('120');
+		}else if($(this).val()<-10){
+			$(this).val('-10');
+		}
+		start();
+	});
+	
+	$('input[name^="rmask"]').change(function(){
+
+		if($(this).val()>120){
+			$(this).val('120');
+		}else if($(this).val()<-10){
+			$(this).val('-10');
+		}
+		start();
+	});
+	
+	$('input[name^="rimaskbone"]').change(function(){
+
+		if($(this).val()>120){
+			$(this).val('120');
+		}else if($(this).val()<-10){
+			$(this).val('-10');
+		}
+		start();
+	});
+	
+</script>
+
+<script type="text/javascript">
+
+	$('input[name^="lair"]').keydown(function(e) {
+
+		if (e.keyCode == '13') {
+			var index = $('input[name^="lair"]').index(this);
+			if(index==10){
+				$('input[name^="lbone['+(0)+']"]').focus();
+				$('input[name^="lbone['+(0)+']"]').select();
+			}
+			$('input[name^="lair['+(index+1)+']"]').focus();
+			$('input[name^="lair['+(index+1)+']"]').select();
+		}
+	});
+	$('input[name^="lbone"]').keydown(function(e) {
+
+		if (e.keyCode == '13') {
+			var index = $('input[name^="lbone"]').index(this);
+			if(index==10){
+				$('input[name^="lmask['+(0)+']"]').focus();
+				$('input[name^="lmask['+(0)+']"]').select();
+			}
+			$('input[name^="lbone['+(index+1)+']"]').focus();
+			$('input[name^="lbone['+(index+1)+']"]').select();
+		}
+	});
+	$('input[name^="lmask"]').keydown(function(e) {
+
+		if (e.keyCode == '13') {
+			var index = $('input[name^="lmask"]').index(this);
+			if(index==10){
+				$('input[name^="lemaskbone['+(0)+']"]').focus();
+				$('input[name^="lemaskbone['+(0)+']"]').select();
+			}
+			$('input[name^="lmask['+(index+1)+']"]').focus();
+			$('input[name^="lmask['+(index+1)+']"]').select();
+		}
+	});
+	$('input[name^="lemaskbone"]').keydown(function(e) {
+
+		if (e.keyCode == '13') {
+			var index = $('input[name^="lemaskbone"]').index(this);
+			if(index==10){
+				$('input[name^="rair['+(0)+']"]').focus();
+				$('input[name^="rair['+(0)+']"]').select();
+			}
+			$('input[name^="lemaskbone['+(index+1)+']"]').focus();
+			$('input[name^="lemaskbone['+(index+1)+']"]').select();
+		}
+	});
+	$('input[name^="rair"]').keydown(function(e) {
+
+		if (e.keyCode == '13') {
+			var index = $('input[name^="rair"]').index(this);
+			if(index==10){
+				$('input[name^="rbone['+(0)+']"]').focus();
+				$('input[name^="rbone['+(0)+']"]').select();
+			}
+			$('input[name^="rair['+(index+1)+']"]').focus();
+			$('input[name^="rair['+(index+1)+']"]').select();
+		}
+	});
+	$('input[name^="rbone"]').keydown(function(e) {
+
+		if (e.keyCode == '13') {
+			var index = $('input[name^="rbone"]').index(this);
+			if(index==10){
+				$('input[name^="rmask['+(0)+']"]').focus();
+				$('input[name^="rmask['+(0)+']"]').select();
+			}
+			$('input[name^="rbone['+(index+1)+']"]').focus();
+			$('input[name^="rbone['+(index+1)+']"]').select();
+		}
+	});
+	$('input[name^="rmask"]').keydown(function(e) {
+
+		if (e.keyCode == '13') {
+			var index = $('input[name^="rmask"]').index(this);
+			if(index==10){
+				$('input[name^="rimaskbone['+(0)+']"]').focus();
+				$('input[name^="rimaskbone['+(0)+']"]').select();
+			}
+			$('input[name^="rmask['+(index+1)+']"]').focus();
+			$('input[name^="rmask['+(index+1)+']"]').select();
+		}
+	});
+	$('input[name^="rimaskbone"]').keydown(function(e) {
+
+		if (e.keyCode == '13') {
+			var index = $('input[name^="rimaskbone"]').index(this);
+			if(index==10){
+				$('input[name^="lair['+(0)+']"]').focus();
+				$('input[name^="lair['+(0)+']"]').select();
+			}
+			$('input[name^="rimaskbone['+(index+1)+']"]').focus();
+			$('input[name^="rimaskbone['+(index+1)+']"]').select();
+		}
+	});
+</script>
